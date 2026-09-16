@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Zion AI Meeting Policy Generator</title>
+<meta name="description" content="Generate an internal policy for AI note-takers and meeting assistants: consent, retention, exclusions, vendor rules. Free tool by Zion Tech Group.">
+<style>
+:root{--bg:#0d0f0a;--card:#181c12;--acc:#bef264;--txt:#f0f7e5;--mut:#a8ba8f}
+*{box-sizing:border-box}body{margin:0;font-family:system-ui,Segoe UI,Roboto,sans-serif;background:var(--bg);color:var(--txt)}
+header{padding:48px 24px 24px;text-align:center;background:linear-gradient(160deg,#25360c,#0d0f0a)}
+h1{margin:0 0 8px}.wrap{max-width:920px;margin:0 auto;padding:24px}
+.panel{background:var(--card);border:1px solid #2c3a1c;border-radius:14px;padding:20px;margin-bottom:20px}
+label{display:block;font-size:.85rem;color:var(--mut);margin:12px 0 4px}
+input,select{width:100%;padding:10px;border-radius:8px;border:1px solid #3a4d26;background:#12170c;color:var(--txt)}
+button{margin-top:14px;padding:12px 22px;border:0;border-radius:10px;background:var(--acc);color:#17210a;font-weight:700;cursor:pointer}
+pre{white-space:pre-wrap;background:#10150a;border:1px solid #2c3a1c;border-radius:12px;padding:16px;font-size:.85rem;max-height:460px;overflow:auto}
+footer{padding:32px 24px;text-align:center;color:var(--mut);font-size:.85rem;border-top:1px solid #242e17;margin-top:40px}
+footer a{color:var(--acc);text-decoration:none;margin:0 8px}
+</style>
+</head>
+<body>
+<header><h1>🎙️ Zion AI Meeting Policy Generator</h1>
+<p>AI note-takers joined your meetings before your policies did. Generate a clear internal policy in 30 seconds. Template — requires legal review.</p></header>
+<div class="wrap">
+<div class="panel">
+<label>Organization</label><input id="org" value="Your Company">
+<label>Recording consent standard</label><select id="consent"><option>All-party consent required</option><option>One-party consent (host announces)</option><option>Opt-out model (announce + allow decline)</option></select>
+<label>Transcript retention</label><select id="ret"><option>30 days then auto-delete</option><option>90 days then auto-delete</option><option>Retain per project policy</option><option>No retention — summaries only</option></select>
+<label>Excluded meetings (never recorded by AI)</label><input id="excl" value="HR discussions, legal counsel, executive board, client calls under NDA">
+<label>Approved vendors</label><input id="vend" value="Approved list maintained by IT; personal AI accounts prohibited">
+<button onclick="gen()">Generate policy</button>
+</div>
+<div class="panel" id="result" style="display:none"><pre id="doc"></pre><button onclick="dl()">Download .md</button></div>
+</div>
+<footer>Part of the <a href="https://ziontechgroup.com">Zion Tech Group</a> AI apps network ·
+<a href="https://ziontechgroup.com/zion-ai-policy-generator/">AI Policy Generator</a>
+<a href="https://ziontechgroup.com/ai-meeting-intelligence-minutes-and-actions/">Meeting Intelligence</a>
+<a href="https://ziontechgroup.com/zion-agent-handoff-designer/">Handoff Designer</a></footer>
+<script>
+function gen(){const g=id=>document.getElementById(id).value;
+const d=`# AI Meeting Assistant Policy — ${g('org')}
+**Effective:** ${new Date().toISOString().slice(0,10)} | **Generated via Zion AI Meeting Policy Generator (template — requires legal review)**
+
+## 1. Scope
+Applies to all employees, contractors and vendors using AI note-takers, transcription or meeting-summary tools on behalf of ${g('org')}.
+
+## 2. Consent & Notification
+- Standard: **${g('consent')}**.
+- The AI assistant must be announced at the start of the meeting and visible in the participant list.
+- External participants must be informed and given the option to decline recording.
+
+## 3. Prohibited Meetings
+AI assistants are **not permitted** in: ${g('excl')}.
+
+## 4. Data Handling
+- Retention: **${g('ret')}**.
+- Transcripts are confidential internal records; sharing outside ${g('org')} requires the meeting owner's approval.
+- Vendors: ${g('vend')}.
+- Recordings/transcripts must not be used to train vendor models (opt out / enterprise terms required).
+
+## 5. Accuracy & Accountability
+- AI summaries are drafts; the meeting owner is responsible for correcting action items.
+- Decisions recorded by AI must be confirmed by a human before execution.
+
+## 6. Access & Storage
+- Transcripts stored in company-managed systems only; local downloads discouraged.
+- Access limited to participants unless the owner grants otherwise.
+
+## 7. Enforcement
+Violations may result in access revocation and disciplinary action. Questions → IT/Compliance.`;
+document.getElementById('doc').textContent=d;document.getElementById('result').style.display='block';window._doc=d;}
+function dl(){const b=new Blob([window._doc],{type:'text/markdown'});const a=document.createElement('a');a.href=URL.createObjectURL(b);a.download='ai-meeting-policy.md';a.click();}
+</script>
+</body>
+</html>
